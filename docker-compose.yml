@@ -1,0 +1,35 @@
+services:
+  php-cli: &php-cli
+    build: service/docker/php-cli
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./service:/app
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+      - '8080:15672'
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: account
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "account"]
+      interval: 5s
+
+  worker:
+    <<: *php-cli
+    command: bin/console messenger:consume -vv commands
+    deploy:
+      replicas: 2
+volumes:
+  postgres:

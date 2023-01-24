@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  _instanceof:
+    App\Messenger\Messages\Message:
+      tags: ['messenger.message']
+
+  App\Messenger\Service\:
+    resource: '../Service/'
+
+  App\Messenger\Messages\:
+    resource: '../Messages/'
+
+  App\Messenger\Subscribers\:
+    resource: '../Subscribers/'
+
+
+
+

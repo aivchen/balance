@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Account\Domain\Account" table="accounts">
+        <id name="id" type="account_id"/>
+        <field name="balance" type="account_money"/>
+        <field name="version" type="integer" version="true" />
+    </entity>
+
+</doctrine-mapping>

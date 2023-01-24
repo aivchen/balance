@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\Account\DataFixtures\:
+    resource: '../DataFixtures/'
+
+  App\Account\Application\:
+    resource: '../Application/'
+
+  App\Account\Domain\Repository:
+    class: \App\Account\Infrastructure\Persistence\Doctrine\Repository
+
+  App\Account\Domain\Flusher:
+    class: \App\Account\Infrastructure\Persistence\Doctrine\Flusher
