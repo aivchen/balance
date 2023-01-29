@@ -1,11 +1,15 @@
 services:
   php-cli: &php-cli
     build: service/docker/php-cli
+    volumes:
+      - ./service:/app
+
+  migrations:
+    <<: *php-cli
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./service:/app
+    command: bin/console doctrine:migrations:migrate --no-interaction
 
   rabbit:
     image: rabbitmq:3-management

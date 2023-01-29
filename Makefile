@@ -1,4 +1,4 @@
-init: docker-down-clear docker-pull docker-build composer-install docker-up migrations
+init: docker-down-clear docker-pull docker-build composer-install docker-up
 
 docker-down-clear:
 	docker compose down -v --remove-orphans
@@ -14,9 +14,6 @@ docker-up:
 
 bash:
 	docker compose run --rm php-cli bash
-
-migrations:
-	docker compose run --rm php-cli bin/console doctrine:migrations:migrate --no-interaction
 
 cs-fix:
 	docker compose run --rm php-cli vendor/bin/php-cs-fixer fix
