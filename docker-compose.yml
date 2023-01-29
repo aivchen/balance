@@ -29,6 +29,7 @@ services:
   worker:
     <<: *php-cli
     command: bin/console messenger:consume -vv commands
+    restart: on-failure
     deploy:
       replicas: 2
 volumes:
