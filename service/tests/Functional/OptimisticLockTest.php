@@ -16,34 +16,25 @@ class OptimisticLockTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $em1 = $this->getEntityManager();
+        /** @var EntityManagerInterface $em1 */
+        $em1 = static::getContainer()->get(EntityManagerInterface::class);
         $em2 = clone $em1;
 
-        $repository1 = $em1->getRepository(Account::class);
-        $repository2 = $em2->getRepository(Account::class);
-
         /** @var Account $acc1 */
-        $acc1 = $repository1->findOneBy(['id' => 'user-1']);
+        $acc1 = $em1->find(Account::class, 'user-1');
 
         /** @var Account $acc2 */
-        $acc2 = $repository2->findOneBy(['id' => 'user-1']);
+        $acc2 = $em2->find(Account::class, 'user-1');
 
         $this->assertNotSame($acc1, $acc2);
 
         $acc1->deposit(Money::make(100));
-        $acc2->deposit(Money::make(200));
+        $acc2->deposit(Money::make(100));
 
         $em1->flush();
 
         $this->expectException(OptimisticLockException::class);
 
         $em2->flush();
-    }
-
-    private function getEntityManager(): EntityManagerInterface
-    {
-        /** @var EntityManagerInterface $em1 */
-        $em1 = static::getContainer()->get(EntityManagerInterface::class);
-        return $em1;
     }
 }
